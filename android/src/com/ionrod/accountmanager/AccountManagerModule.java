@@ -18,9 +18,8 @@ import org.appcelerator.kroll.common.TiConfig;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 
-@Kroll.module(name="AccountManager", id="com.ionrod.accountmanager")
-public class AccountManagerModule extends KrollModule
-{
+@Kroll.module(name = "AccountManager", id = "com.ionrod.accountmanager")
+public class AccountManagerModule extends KrollModule {
 
 	// Standard Debugging variables
 	private static final String LCAT = "AccountManagerModule";
@@ -29,32 +28,52 @@ public class AccountManagerModule extends KrollModule
 	// You can define constants with @Kroll.constant, for example:
 	// @Kroll.constant public static final String EXTERNAL_NAME = value;
 
-	public AccountManagerModule()
-	{
+	public AccountManagerModule() {
 		super();
 	}
 
 	@Kroll.onAppCreate
-	public static void onAppCreate(TiApplication app)
-	{
-		
-		// put module init code that needs to run when the application is created
+	public static void onAppCreate(TiApplication app) {
+
+		// put module init code that needs to run when the application is
+		// created
 	}
 
 	// Methods
 	@Kroll.method
-	public String getUserEmail()
-	{
+	public String getUserEmail() {
 		try {
-			Account[] accounts = AccountManager.get(TiApplication.getInstance()).getAccountsByType("com.google"); 
+			Account[] accounts = AccountManager
+					.get(TiApplication.getInstance()).getAccountsByType(
+							"com.google");
 			for (Account account : accounts) {
-		        return account.name;
+				return account.name;
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
+			return "";
+		}
+		return "";
+	}
+	@Kroll.method
+	public String getUserPhoneNumber() {
+		try {
+			AccountManager am = AccountManager.get(this);
+			Account[] accounts = am.getAccounts();
+
+			for (Account ac : accounts) {
+				String acname = ac.name;
+				String actype = ac.type;
+				// Take your time to look at all available accounts
+				// System.out.println("Accounts : " + acname + ", " + actype);
+				if (actype.equals("com.whatsapp")) {
+					return ac.name;
+				}
+
+			}
+		} catch (Exception e) {
 			return "";
 		}
 		return "";
 	}
 
 }
-
